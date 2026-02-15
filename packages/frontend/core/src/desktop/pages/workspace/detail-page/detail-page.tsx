@@ -73,6 +73,7 @@ import { EditorChatPanel } from './tabs/chat';
 import { EditorFramePanel } from './tabs/frame';
 import { EditorJournalPanel } from './tabs/journal';
 import { EditorOutlinePanel } from './tabs/outline';
+import { TickerNewsPanel, useDocTickers } from './tabs/ticker-news';
 
 const DetailPageImpl = memo(function DetailPageImpl() {
   const {
@@ -126,6 +127,15 @@ const DetailPageImpl = memo(function DetailPageImpl() {
   const enableComment =
     workspace.flavour !== 'local' &&
     serverConfig.features.includes(ServerFeature.Comment);
+
+  const tickers = useDocTickers();
+
+  useEffect(() => {
+    if (tickers.length > 0) {
+      workbench.openSidebar();
+      view.activeSidebarTab('ticker-news');
+    }
+  }, [tickers.length > 0]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (isActiveView) {
@@ -441,6 +451,17 @@ const DetailPageImpl = memo(function DetailPageImpl() {
           <Scrollable.Root className={styles.sidebarScrollArea}>
             <Scrollable.Viewport>
               <EditorAnalyticsPanel workspaceId={workspace.id} docId={doc.id} />
+            </Scrollable.Viewport>
+            <Scrollable.Scrollbar />
+          </Scrollable.Root>
+        </ViewSidebarTab>
+      )}
+
+      {tickers.length > 0 && (
+        <ViewSidebarTab tabId="ticker-news" icon={<ChartPanelIcon />}>
+          <Scrollable.Root className={styles.sidebarScrollArea}>
+            <Scrollable.Viewport>
+              <TickerNewsPanel />
             </Scrollable.Viewport>
             <Scrollable.Scrollbar />
           </Scrollable.Root>

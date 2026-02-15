@@ -5,6 +5,7 @@ import type {
 } from '@affine/core/modules/workspace-property';
 import type { I18nString } from '@affine/i18n';
 import {
+  ChartPanelIcon,
   CheckBoxCheckLinearIcon,
   DateTimeIcon,
   EdgelessIcon,
@@ -100,6 +101,12 @@ import {
   TextGroupHeader,
   TextValue,
 } from './text';
+import {
+  TickerDocListProperty,
+  TickerFilterValue,
+  TickerGroupHeader,
+  TickerValue,
+} from './ticker';
 
 export const DateFilterMethod = {
   after: 'com.affine.filter.after',
@@ -367,6 +374,25 @@ export const WorkspacePropertyTypes = {
     },
     filterValue: TemplateFilterValue,
     defaultFilter: { method: 'is', value: 'true' },
+  },
+  ticker: {
+    icon: ChartPanelIcon,
+    value: TickerValue,
+    name: 'com.affine.page-properties.property.ticker',
+    description: 'com.affine.page-properties.property.ticker.tooltips',
+    filterMethod: {
+      is: 'com.affine.editCollection.rules.include.is',
+      'is-not': 'com.affine.editCollection.rules.include.is-not',
+      'is-not-empty': 'com.affine.filter.is not empty',
+      'is-empty': 'com.affine.filter.is empty',
+    },
+    allowInGroupBy: true,
+    allowInOrderBy: true,
+    filterValue: TickerFilterValue,
+    defaultFilter: { method: 'is-not-empty' },
+    showInDocList: 'stack',
+    docListProperty: TickerDocListProperty,
+    groupHeader: TickerGroupHeader,
   },
   unknown: {
     icon: PropertyIcon,
